@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Study-Time
+
+WebApp to count your study and rest times.
 
 ## Available Scripts
 
