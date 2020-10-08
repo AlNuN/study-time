@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import UIfx from 'uifx';
 import alarmMp3 from '../../assets/alarm.mp3';
+import {
+  Main, MainTitle, Label, Pie, Time, LabelSpan,
+} from './style';
 
 Modal.setAppElement(document.getElementById('root'));
 
@@ -83,14 +86,21 @@ export default function Watch() {
   }
 
   return (
-    <>
-      <h2>
+    <Main>
+      <MainTitle>
         {inRest
           ? 'Rest Time!'
           : 'Be Productive today!'}
-      </h2>
-      <label>
-        Set Time
+      </MainTitle>
+      <Label>
+        <Pie
+          initialTime={initialTime}
+          currentTime={time}
+          inRest={inRest}
+        >
+          <Time className="time">{getTime(time)}</Time>
+        </Pie>
+        <LabelSpan>Set Time</LabelSpan>
         <input
           type="range"
           min={inRest ? '1' : '5'}
@@ -99,8 +109,7 @@ export default function Watch() {
           value={initialTime}
           onChange={handleInitialTime}
         />
-      </label>
-      <div>{getTime(time)}</div>
+      </Label>
       <button
         type="button"
         onMouseUp={toggleTimer}
@@ -126,7 +135,7 @@ export default function Watch() {
         <h3>
           {inRest
             ? 'Rest Time Over!'
-            : "Congratulations, you've inRest your task!"}
+            : "Congratulations, you've completed your task!"}
         </h3>
         <button
           type="button"
@@ -135,6 +144,6 @@ export default function Watch() {
           Close
         </button>
       </Modal>
-    </>
+    </Main>
   );
 }
