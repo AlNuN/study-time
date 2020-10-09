@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
 import UIfx from 'uifx';
 import alarmMp3 from '../../assets/alarm.mp3';
 import {
-  Main, MainTitle, Label, Pie, Time, LabelSpan,
+  Main, MainTitle, Label, Pie, Time, LabelSpan, Button, Slider, StyledModal,
 } from './style';
-
-Modal.setAppElement(document.getElementById('root'));
 
 const alarmSound = new UIfx(
   alarmMp3,
@@ -101,7 +98,7 @@ export default function Watch() {
           <Time className="time">{getTime(time)}</Time>
         </Pie>
         <LabelSpan>Set Time</LabelSpan>
-        <input
+        <Slider
           type="range"
           min={inRest ? '1' : '5'}
           max={inRest ? '60' : '90'}
@@ -110,24 +107,24 @@ export default function Watch() {
           onChange={handleInitialTime}
         />
       </Label>
-      <button
+      <Button
         type="button"
         onMouseUp={toggleTimer}
       >
         {isTimerRunning
           ? 'Give Up'
           : 'Start'}
-      </button>
+      </Button>
       {inRest
         && (
-        <button
+        <Button
           type="button"
           onMouseUp={skipRest}
         >
           Skip rest
-        </button>
+        </Button>
         )}
-      <Modal
+      <StyledModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Congratulations message"
@@ -137,13 +134,13 @@ export default function Watch() {
             ? 'Rest Time Over!'
             : "Congratulations, you've completed your task!"}
         </h3>
-        <button
+        <Button
           type="button"
           onMouseUp={closeModal}
         >
           Close
-        </button>
-      </Modal>
+        </Button>
+      </StyledModal>
     </Main>
   );
 }
