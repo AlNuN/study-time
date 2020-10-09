@@ -207,3 +207,97 @@ test('change back to normal once rest modal is closed', async () => {
   const newOldTime = screen.getByText(/25:00/i);
   expect(newOldTime).toBeInTheDocument();
 });
+
+test('has marks that shows advance and sets rest to 25 after the last', async () => {
+  render(<Watch />);
+
+  for (let i = 0; i < 3; i += 1) {
+    const slider = screen.getByRole('slider', { name: /set time/i });
+    fireEvent.change(slider, { target: { value: '5' } });
+    const button = screen.getByRole('button', { name: /start/i });
+    fireEvent.mouseUp(button);
+    await act(async () => {
+      jest.advanceTimersByTime(6000 * 60);
+    });
+    const congratulations = screen.getByText(/Congratulations/i);
+    expect(congratulations).toBeInTheDocument();
+    const closeModalButton = screen.getByRole('button', { name: /close/i });
+    fireEvent.mouseUp(closeModalButton);
+    const restMessage = screen.getByText(/rest time/i);
+    expect(restMessage).toBeInTheDocument();
+    const restButton = screen.getByRole('button', { name: /start/i });
+    fireEvent.mouseUp(restButton);
+    await act(async () => {
+      jest.advanceTimersByTime(6000 * 60);
+    });
+    const restTimeOver = screen.getByText(/00:00/i);
+    expect(restTimeOver).toBeInTheDocument();
+    const getBack = screen.getByText(/rest time over/i);
+    expect(getBack).toBeInTheDocument();
+    const closeRestModalButton = screen.getByRole('button', { name: /close/i });
+    fireEvent.mouseUp(closeRestModalButton);
+  }
+
+  const slider = screen.getByRole('slider', { name: /set time/i });
+  fireEvent.change(slider, { target: { value: '5' } });
+  const button = screen.getByRole('button', { name: /start/i });
+  fireEvent.mouseUp(button);
+  await act(async () => {
+    jest.advanceTimersByTime(10000 * 60);
+  });
+  const congratulations = screen.getByText(/Congratulations/i);
+  expect(congratulations).toBeInTheDocument();
+  const closeModalButton = screen.getByRole('button', { name: /close/i });
+  fireEvent.mouseUp(closeModalButton);
+  const restMessage = screen.getByText(/rest time/i);
+  expect(restMessage).toBeInTheDocument();
+  const newOldTime = screen.getByText(/25:00/i);
+  expect(newOldTime).toBeInTheDocument();
+});
+
+xtest('has marks that shows advance and sets rest to 25 after the last, now skipping', async () => {
+  render(<Watch />);
+
+  for (let i = 0; i < 3; i += 1) {
+    const slider = screen.getByRole('slider', { name: /set time/i });
+    fireEvent.change(slider, { target: { value: '5' } });
+    const button = screen.getByRole('button', { name: /start/i });
+    fireEvent.mouseUp(button);
+    await act(async () => {
+      jest.advanceTimersByTime(6000 * 60);
+    });
+    const congratulations = screen.getByText(/Congratulations/i);
+    expect(congratulations).toBeInTheDocument();
+    const closeModalButton = screen.getByRole('button', { name: /close/i });
+    fireEvent.mouseUp(closeModalButton);
+    const restMessage = screen.getByText(/rest time/i);
+    expect(restMessage).toBeInTheDocument();
+    const restButton = screen.getByRole('button', { name: /start/i });
+    fireEvent.mouseUp(restButton);
+    await act(async () => {
+      jest.advanceTimersByTime(6000 * 60);
+    });
+    const restTimeOver = screen.getByText(/00:00/i);
+    expect(restTimeOver).toBeInTheDocument();
+    const getBack = screen.getByText(/rest time over/i);
+    expect(getBack).toBeInTheDocument();
+    const closeRestModalButton = screen.getByRole('button', { name: /close/i });
+    fireEvent.mouseUp(closeRestModalButton);
+  }
+
+  const slider = screen.getByRole('slider', { name: /set time/i });
+  fireEvent.change(slider, { target: { value: '5' } });
+  const button = screen.getByRole('button', { name: /start/i });
+  fireEvent.mouseUp(button);
+  await act(async () => {
+    jest.advanceTimersByTime(10000 * 60);
+  });
+  const congratulations = screen.getByText(/Congratulations/i);
+  expect(congratulations).toBeInTheDocument();
+  const closeModalButton = screen.getByRole('button', { name: /close/i });
+  fireEvent.mouseUp(closeModalButton);
+  const restMessage = screen.getByText(/rest time/i);
+  expect(restMessage).toBeInTheDocument();
+  const newOldTime = screen.getByText(/25:00/i);
+  expect(newOldTime).toBeInTheDocument();
+});

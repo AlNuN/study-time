@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import UIfx from 'uifx';
 import alarmMp3 from '../../assets/alarm.mp3';
 import {
-  Main, MainTitle, Label, Pie, Time, LabelSpan, Button, Slider, StyledModal,
+  Main, MainTitle, Label, Pie, Time, LabelSpan,
+  Button, Slider, StyledModal, Progress, FlexContainer,
 } from './style';
 
 const alarmSound = new UIfx(
@@ -16,6 +17,7 @@ export default function Watch() {
   const [isTimerRunning, setTimerRunning] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [inRest, setInRest] = useState(false);
+  const [progress, setProgress] = useState([false, false, false, false]);
 
   function openModal() {
     setIsOpen(true);
@@ -23,22 +25,31 @@ export default function Watch() {
 
   function closeModal() {
     setIsOpen(false);
+    const fufilled = progress.indexOf(false);
     if (!inRest) {
       setInRest(true);
-      setInitialTime(5);
-      setTime(5 * 60 * 1000);
+      if (fufilled !== -1) {
+        setTime(5 * 60 * 1000);
+        setInitialTime(5);
+      } else {
+        setTime(25 * 60 * 1000);
+        setInitialTime(25);
+      }
     } else {
       setInRest(false);
       setInitialTime(25);
       setTime(25 * 60 * 1000);
+      if (fufilled === -1) setProgress([false, false, false, false]);
     }
   }
 
   function skipRest() {
+    const fufilled = progress.indexOf(false);
     setTimerRunning(false);
     setInRest(false);
     setInitialTime(25);
     setTime(25 * 60 * 1000);
+    if (fufilled === -1) setProgress([false, false, false, false]);
   }
 
   function toggleTimer() {
@@ -63,6 +74,12 @@ export default function Watch() {
     }
     const id = setTimeout(changeTime, 1000);
     if (time <= 0) {
+      const fufilled = progress.indexOf(false);
+      if (!inRest && fufilled !== -1 && modalIsOpen) {
+        const newProgress = [...progress];
+        newProgress[fufilled] = true;
+        setProgress(newProgress);
+      }
       setTimerRunning(false);
       alarmSound.play();
       openModal();
@@ -89,7 +106,7 @@ export default function Watch() {
           ? 'Rest Time!'
           : 'Be Productive today!'}
       </MainTitle>
-      <Label>
+      <FlexContainer>
         <Pie
           initialTime={initialTime}
           currentTime={time}
@@ -97,6 +114,14 @@ export default function Watch() {
         >
           <Time className="time">{getTime(time)}</Time>
         </Pie>
+
+        <aside>
+          {progress.map((item, key) => (
+            <Progress done={item} key={key} />
+          ))}
+        </aside>
+      </FlexContainer>
+      <Label>
         <LabelSpan>Set Time</LabelSpan>
         <Slider
           type="range"

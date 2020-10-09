@@ -8,6 +8,7 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 350px;
 `;
 
 const MainTitle = styled.h2`
@@ -30,6 +31,7 @@ const Pie = styled.div`
   background-image: linear-gradient(to right, transparent 50%, currentColor 0%);
   color: ${(props) => props.theme.source};
   position: relative;
+  grid-area: circle;
   &::before {
     content: '';
     display: block;
@@ -91,7 +93,6 @@ const Slider = styled.input`
 const StyledModal = styled(Modal)`
   width: 300px;
   height: 200px;
-  margin: auto;
   margin: calc(50vh - 100px) auto;
   display: flex;
   align-items: center;
@@ -127,6 +128,26 @@ const StyledModal = styled(Modal)`
   }
 `;
 
+const Progress = styled.div`
+  width: 10px;
+  height: 10px;
+  background-color: ${(props) => (props.done ? 'yellowgreen' : 'gray')};
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 2px ${(props) => props.theme.source} solid;
+`;
+
+const FlexContainer = styled.div`
+  width: 100%;
+  display: grid;
+  align-items: center;
+  grid-template-areas: '. . circle progress';
+
+  aside{
+    grid-area: progress;
+  }
+`;
+
 export {
   Main,
   MainTitle,
@@ -137,4 +158,6 @@ export {
   Button,
   Slider,
   StyledModal,
+  Progress,
+  FlexContainer,
 };
